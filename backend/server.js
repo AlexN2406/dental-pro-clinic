@@ -189,6 +189,14 @@ app.get('/api/reviews/doctor/:doctorId', async (req, res) => {
         res.status(500).json({ error: 'Ошибка сервера' });
     }
 });
+// Раздача статических файлов (HTML, CSS, JS)
+const path = require('path');
+app.use(express.static(path.join(__dirname, '..')));
+
+// Перенаправление корня на about.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'about.html'));
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Сервер запущен на http://localhost:${PORT}`));
