@@ -1,3 +1,5 @@
+CREATE DATABASE dental_clinic_bla2 WITH ENCODING='UTF8';
+
 -- Таблица пользователей
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
