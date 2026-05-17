@@ -3,13 +3,21 @@ const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-const path = require('path');
+
+// Раздача статических файлов (HTML, CSS, JS)
 app.use(express.static(path.join(__dirname, '..')));
+
+// Корневой маршрут - перенаправляем на about.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'about.html'));
+});
+
 // Подключение к PostgreSQL
 const pool = new Pool({
     user: process.env.DB_USER || 'postgres',
@@ -188,14 +196,6 @@ app.get('/api/reviews/doctor/:doctorId', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: 'Ошибка сервера' });
     }
-});
-// Раздача статических файлов (HTML, CSS, JS)
-const path = require('path');
-app.use(express.static(path.join(__dirname, '..')));
-
-// Перенаправление корня на about.html
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'about.html'));
 });
 
 const PORT = process.env.PORT || 5000;
