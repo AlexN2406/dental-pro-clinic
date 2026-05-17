@@ -8,7 +8,8 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 app.use(cors());
-
+const path = require('path');
+app.use(express.static(path.join(__dirname, '..')));
 // Подключение к PostgreSQL
 const pool = new Pool({
     user: process.env.DB_USER || 'postgres',
