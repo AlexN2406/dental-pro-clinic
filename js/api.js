@@ -1,6 +1,6 @@
 // api.js - подключение к backend серверу
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://dental-pro-g0qv.onrender.com/api';
 
 // Сохранение токена
 function setToken(token) {
