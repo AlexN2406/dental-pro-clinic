@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <!-- Favicon для всех устройств -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2300b4d8;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23007cb2;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23grad)'/%3E%3Ctext x='50' y='68' text-anchor='middle' font-size='52' fill='white' font-family='Arial'%3E%3Ctspan%3E🦷%3C/tspan%3E%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300b4d8'/%3E%3Ctext x='50' y='68' text-anchor='middle' font-size='52' fill='white' font-family='Arial'%3E🦷%3C/text%3E%3C/svg%3E">
+<link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2300b4d8'/%3E%3Ctext x='50' y='68' text-anchor='middle' font-size='52' fill='white' font-family='Arial'%3E🦷%3C/text%3E%3C/svg%3E">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Дентал-Про | Врачи</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif; background: #ffffff; color: #1a2c3e; line-height: 1.5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .header { background: white; box-shadow: 0 2px 12px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        .header-flex { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: #0077b6; text-decoration: none; }
+        .burger { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 6px; padding: 8px; }
+        .burger span { width: 28px; height: 3px; background-color: #0077b6; border-radius: 4px; }
+        .side-menu { position: fixed; top: 0; right: -100%; width: 85%; max-width: 320px; height: 100%; background-color: white; box-shadow: -4px 0 24px rgba(0,0,0,0.1); z-index: 200; transition: right 0.3s ease; padding: 80px 24px 32px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+        .side-menu.open { right: 0; }
+        .side-menu a { display: block; font-size: 1.2rem; font-weight: 500; color: #1e2f3e; text-decoration: none; padding: 12px 0; border-bottom: 1px solid #eef2f8; transition: 0.2s; }
+        .side-menu a:hover { color: #00b4d8; padding-left: 8px; }
+        .close-menu { position: absolute; top: 20px; right: 24px; font-size: 28px; background: none; border: none; cursor: pointer; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 150; display: none; }
+        .overlay.active { display: block; }
+        .hero { background: linear-gradient(135deg, #eef7ff, #ffffff); text-align: center; padding: 60px 0; }
+        .hero h1 { font-size: 2.5rem; color: #023e8a; margin-bottom: 16px; }
+        .btn { display: inline-block; background: #00b4d8; color: white; padding: 12px 32px; border-radius: 60px; font-weight: 600; border: none; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .btn:hover { background: #0096b8; transform: translateY(-2px); }
+        .btn-small { padding: 8px 20px; font-size: 0.9rem; }
+        .doctors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; }
+        .doctor-card { background: #f8fafd; border-radius: 28px; padding: 28px; border: 1px solid #e2edf7; text-align: center; transition: 0.2s; }
+        .doctor-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.05); }
+        .doctor-img { width: 120px; height: 120px; background: #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 16px; }
+        .badge { background: #e0f2fe; color: #0077b6; padding: 4px 12px; border-radius: 40px; font-size: 0.75rem; display: inline-block; margin: 8px 0; }
+        .appointment-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 400; }
+        .appointment-modal-content { background: white; max-width: 450px; width: 90%; border-radius: 32px; padding: 32px; position: relative; }
+        .close-appointment-modal { position: absolute; top: 16px; right: 20px; font-size: 28px; cursor: pointer; color: #718096; }
+        .close-appointment-modal:hover { color: #e53e3e; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+        .form-group input, .form-group select { width: 100%; padding: 12px 16px; border: 1px solid #cbd5e0; border-radius: 60px; font-size: 1rem; }
+        .modal-buttons { display: flex; gap: 12px; margin-top: 20px; }
+        .modal-buttons .btn { flex: 1; }
+        .btn-secondary { background: #e2e8f0; color: #1a2c3e; }
+        .success-msg, .error-msg { padding: 12px; border-radius: 12px; margin-bottom: 20px; display: none; }
+        .success-msg { background: #d4edda; color: #155724; }
+        .error-msg { background: #f8d7da; color: #721c24; }
+        .dark-footer { background-color: #023e8a; color: white; padding: 48px 0 32px; margin-top: 20px; }
+        .footer-contact-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px; max-width: 1000px; margin: 0 auto; }
+        .footer-contact-item { flex: 1; min-width: 180px; }
+        .footer-contact-item h4 { font-size: 1.2rem; margin-bottom: 12px; color: #a9d6e5; }
+        .footer-contact-item p, .footer-contact-item a { margin: 8px 0; color: #f0f9ff; text-decoration: none; }
+        .social-link { display: inline-block; margin-right: 20px; margin-top: 8px; color: white; text-decoration: none; }
+        .copyright-bottom { text-align: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid #2a6592; font-size: 0.8rem; opacity: 0.8; }
+        .small-text { font-size: 0.8rem; margin-top: 16px; opacity: 0.7; }
+        h2 { font-size: 1.8rem; margin-bottom: 24px; color: #023e8a; }
+        .loading { text-align: center; padding: 40px; font-size: 1.2rem; color: #718096; }
+    </style>
+</head>
+<body>
+<div class="header"><div class="container header-flex"><a href="about.html" class="logo">Дентал-Про</a><button class="burger" id="burgerBtn"><span></span><span></span><span></span></button></div></div>
+<div class="side-menu" id="sideMenu"><button class="close-menu" id="closeMenuBtn">&times;</button><a href="about.html">О клинике</a><a href="services.html">Услуги</a><a href="doctors.html">Врачи</a><a href="patients.html">Пациентам</a><a href="profile.html">Личный кабинет</a></div>
+<div class="overlay" id="overlay"></div>
+<main><div class="hero"><div class="container"><h1>Наши врачи</h1><p>Опытные специалисты, которые заботятся о вашей улыбке</p></div></div>
+<section><div class="container"><h2>Наши специалисты</h2><div id="doctorsContainer" class="doctors-grid"><div class="loading">Загрузка врачей...</div></div></div></section></main>
+<div id="appointmentModal" class="appointment-modal"><div class="appointment-modal-content"><span class="close-appointment-modal" id="closeModalBtn">&times;</span><h3>Запись на приём</h3><div class="selected-doctor-info">Врач: <strong id="selectedDoctorName">-</strong></div><div id="modalMessage" class="error-msg"></div><div id="modalSuccess" class="success-msg"></div>
+    <form id="appointmentForm"><div class="form-group"><label>Выберите услугу</label><select id="appointmentService" required><option value="">Загрузка услуг...</option></select></div>
+    <div class="form-group"><label>Желаемая дата</label><input type="date" id="appointmentDate" required></div>
+    <div class="modal-buttons"><button type="button" class="btn btn-secondary" id="cancelModalBtn">Отмена</button><button type="submit" class="btn">Записаться</button></div></form>
+    <p class="small-text" style="text-align:center; margin-top:16px;">*Наш администратор свяжется с вами</p></div></div>
+<div class="dark-footer"><div class="container"><div class="footer-contact-grid"><div class="footer-contact-item"><h4>Контакты</h4><p>+7 (495) 123-45-67</p><p>info@dental-pro.ru</p><p>Воронеж, ул. Депутатская, 3</p></div><div class="footer-contact-item"><h4>Мессенджеры</h4><a href="#" class="social-link">ВКонтакте</a><a href="#" class="social-link">Telegram</a></div><div class="footer-contact-item"><h4>Режим работы</h4><p>Пн–Пт: 9:00 – 21:00</p><p>Сб: 10:00 – 18:00</p><p>Вс: выходной</p></div></div><div class="copyright-bottom">© Дентал-Про — стоматологическая поликлиника. Лицензия № ФС-99-01-123456</div></div></div>
+<script src="js/api.js"></script>
+<script>
+    const burger = document.getElementById('burgerBtn'), sideMenu = document.getElementById('sideMenu'), overlay = document.getElementById('overlay'), closeMenuBtn = document.getElementById('closeMenuBtn');
+    function openMenu() { sideMenu.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { sideMenu.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; }
+    burger.addEventListener('click', openMenu); closeMenuBtn.addEventListener('click', closeMenu); overlay.addEventListener('click', closeMenu);
+    
+    let currentDoctorId = null, currentDoctorName = null;
+    async function loadDoctors() {
+        const container = document.getElementById('doctorsContainer');
+        try {
+            const doctors = await api.getDoctors();
+            if (!doctors.length) { container.innerHTML = '<p>Врачи временно недоступны</p>'; return; }
+            container.innerHTML = doctors.map(d => `<div class="doctor-card"><div class="doctor-img">${d.photo_url === 'doctor_female' ? '👩‍⚕️' : '👨‍⚕️'}</div><h3>${d.fullname}</h3><div class="badge">${d.specialization}</div><p>Стаж: ${d.experience} лет</p><button class="btn btn-small book-doctor-btn" data-doctor-id="${d.id}" data-doctor-name="${d.fullname}">Записаться</button></div>`).join('');
+            document.querySelectorAll('.book-doctor-btn').forEach(btn => btn.addEventListener('click', () => { openAppointmentModal(btn.dataset.doctorId, btn.dataset.doctorName); }));
+        } catch(err) { container.innerHTML = '<p>Ошибка загрузки</p>'; }
+    }
+    async function loadServicesForModal() {
+        try {
+            const services = await api.getServices();
+            const sel = document.getElementById('appointmentService');
+            if (!services.length) { sel.innerHTML = '<option value="">Услуги недоступны</option>'; return; }
+            sel.innerHTML = '<option value="">Выберите услугу</option>' + services.map(s => `<option value="${s.id}">${s.name} (от ${s.price.toLocaleString()} ₽)</option>`).join('');
+        } catch(err) { console.error(err); }
+    }
+    function openAppointmentModal(doctorId, doctorName) {
+        const token = getToken(); if (!token) { alert('Для записи необходимо авторизоваться.'); window.location.href = 'profile.html'; return; }
+        currentDoctorId = doctorId; currentDoctorName = doctorName;
+        document.getElementById('selectedDoctorName').textContent = doctorName;
+        document.getElementById('appointmentDate').value = ''; document.getElementById('appointmentService').value = '';
+        document.getElementById('modalMessage').style.display = 'none'; document.getElementById('modalSuccess').style.display = 'none';
+        document.getElementById('appointmentModal').style.display = 'flex'; document.body.style.overflow = 'hidden';
+    }
+    function closeAppointmentModal() { document.getElementById('appointmentModal').style.display = 'none'; document.body.style.overflow = ''; currentDoctorId = null; }
+    function showModalMessage(message, isError) {
+        const errDiv = document.getElementById('modalMessage'), sucDiv = document.getElementById('modalSuccess');
+        if (isError) { errDiv.innerHTML = message; errDiv.style.display = 'block'; sucDiv.style.display = 'none'; }
+        else { sucDiv.innerHTML = message; sucDiv.style.display = 'block'; errDiv.style.display = 'none'; }
+        setTimeout(() => { errDiv.style.display = 'none'; sucDiv.style.display = 'none'; }, 5000);
+    }
+    async function submitAppointment(e) {
+        e.preventDefault();
+        const token = getToken(); if (!token) { alert('Для записи необходимо авторизоваться.'); closeAppointmentModal(); window.location.href = 'profile.html'; return; }
+        const serviceId = document.getElementById('appointmentService').value, appointmentDate = document.getElementById('appointmentDate').value;
+        if (!serviceId) { showModalMessage('Выберите услугу', true); return; }
+        if (!appointmentDate) { showModalMessage('Выберите дату', true); return; }
+        const serviceName = document.getElementById('appointmentService').options[document.getElementById('appointmentService').selectedIndex]?.text || 'Услуга';
+        try {
+            if (typeof api.createAppointment === 'function') await api.createAppointment(currentDoctorId, serviceId, appointmentDate);
+            showModalMessage(`✅ Заявка отправлена!<br>Врач: ${currentDoctorName}<br>Услуга: ${serviceName}<br>Дата: ${appointmentDate}`, false);
+            document.getElementById('appointmentDate').value = ''; document.getElementById('appointmentService').value = '';
+            setTimeout(() => closeAppointmentModal(), 3000);
+        } catch(err) { showModalMessage('Ошибка отправки', true); }
+    }
+    const dateInput = document.getElementById('appointmentDate');
+    function formatDate(date) { return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`; }
+    function setMinDate() { if(!dateInput) return; const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1); tomorrow.setHours(0,0,0,0); dateInput.min = formatDate(tomorrow); if(dateInput.value && new Date(dateInput.value) < tomorrow) dateInput.value = ''; }
+    if(dateInput) { dateInput.addEventListener('keydown', e => e.preventDefault()); dateInput.addEventListener('change', function() { if(new Date(this.value) < new Date(dateInput.min)) { alert('❌ Нельзя выбрать прошедшую дату.'); this.value = ''; } }); setMinDate(); }
+    document.getElementById('closeModalBtn')?.addEventListener('click', closeAppointmentModal);
+    document.getElementById('cancelModalBtn')?.addEventListener('click', closeAppointmentModal);
+    document.getElementById('appointmentForm')?.addEventListener('submit', submitAppointment);
+    window.addEventListener('click', (e) => { if (e.target === document.getElementById('appointmentModal')) closeAppointmentModal(); });
+    loadDoctors(); loadServicesForModal();
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <!-- Favicon для всех устройств -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2300b4d8;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23007cb2;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23grad)'/%3E%3Ctext x='50' y='68' text-anchor='middle' font-size='52' fill='white' font-family='Arial'%3E%3Ctspan%3E🦷%3C/tspan%3E%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300b4d8'/%3E%3Ctext x='50' y='68' text-anchor='middle' font-size='52' fill='white' font-family='Arial'%3E🦷%3C/text%3E%3C/svg%3E">
+<link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2300b4d8'/%3E%3Ctext x='50' y='68' text-anchor='middle' font-size='52' fill='white' font-family='Arial'%3E🦷%3C/text%3E%3C/svg%3E">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Дентал-Про | О клинике</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif; background: #ffffff; color: #1a2c3e; line-height: 1.5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .header { background: white; box-shadow: 0 2px 12px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        .header-flex { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: #0077b6; text-decoration: none; }
+        .burger { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 6px; padding: 8px; }
+        .burger span { width: 28px; height: 3px; background-color: #0077b6; border-radius: 4px; }
+        .side-menu { position: fixed; top: 0; right: -100%; width: 85%; max-width: 320px; height: 100%; background-color: white; box-shadow: -4px 0 24px rgba(0,0,0,0.1); z-index: 200; transition: right 0.3s ease; padding: 80px 24px 32px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+        .side-menu.open { right: 0; }
+        .side-menu a { display: block; font-size: 1.2rem; font-weight: 500; color: #1e2f3e; text-decoration: none; padding: 12px 0; border-bottom: 1px solid #eef2f8; transition: 0.2s; }
+        .side-menu a:hover { color: #00b4d8; padding-left: 8px; }
+        .close-menu { position: absolute; top: 20px; right: 24px; font-size: 28px; background: none; border: none; cursor: pointer; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 150; display: none; }
+        .overlay.active { display: block; }
+        .hero { background: linear-gradient(135deg, #eef7ff, #ffffff); text-align: center; padding: 60px 0; }
+        .hero h1 { font-size: 2.5rem; color: #023e8a; margin-bottom: 16px; }
+        .btn { display: inline-block; background: #00b4d8; color: white; padding: 12px 32px; border-radius: 60px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .btn:hover { background: #0096b8; transform: translateY(-2px); }
+        section { padding: 60px 0; border-bottom: 1px solid #ecf3f9; }
+        .bg-light { background-color: #f9fbfe; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 30px; }
+        .card { background: #f8fafd; border-radius: 28px; padding: 28px; transition: 0.2s; border: 1px solid #e2edf7; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.05); }
+        .icon { font-size: 2.5rem; margin-bottom: 16px; }
+        .license-list { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 24px; }
+        .license-badge { background: white; border-radius: 60px; padding: 12px 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); font-weight: 500; color: #023e8a; border: 1px solid #e2edf7; }
+        .record-section { background: #f0f7fc; text-align: center; padding: 40px 20px; border-radius: 40px; margin: 40px 0 30px; }
+        .date-input, .service-select { padding: 14px 20px; font-size: 1rem; border-radius: 60px; border: 1px solid #cbd5e0; width: 100%; max-width: 280px; margin: 16px auto; display: block; font-family: inherit; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 300; }
+        .modal-content { background: white; max-width: 400px; width: 90%; border-radius: 32px; padding: 32px; text-align: center; }
+        .close-modal { float: right; font-size: 28px; cursor: pointer; }
+        .dark-footer { background-color: #023e8a; color: white; padding: 48px 0 32px; margin-top: 20px; }
+        .footer-contact-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px; max-width: 1000px; margin: 0 auto; }
+        .footer-contact-item { flex: 1; min-width: 180px; }
+        .footer-contact-item h4 { font-size: 1.2rem; margin-bottom: 12px; color: #a9d6e5; }
+        .footer-contact-item p, .footer-contact-item a { margin: 8px 0; color: #f0f9ff; text-decoration: none; }
+        .social-link { display: inline-block; margin-right: 20px; margin-top: 8px; color: white; text-decoration: none; }
+        .copyright-bottom { text-align: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid #2a6592; font-size: 0.8rem; opacity: 0.8; }
+        .small-text { font-size: 0.8rem; margin-top: 16px; opacity: 0.7; }
+        h2 { font-size: 1.8rem; margin-bottom: 24px; color: #023e8a; }
+        .about-text { font-size: 1.1rem; line-height: 1.6; max-width: 800px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="container header-flex">
+        <a href="about.html" class="logo">Дентал-Про</a>
+        <button class="burger" id="burgerBtn"><span></span><span></span><span></span></button>
+    </div>
+</div>
+<div class="side-menu" id="sideMenu">
+    <button class="close-menu" id="closeMenuBtn">&times;</button>
+    <a href="about.html">О клинике</a>
+    <a href="services.html">Услуги</a>
+    <a href="doctors.html">Врачи</a>
+    <a href="patients.html">Пациентам</a>
+    <a href="profile.html">Личный кабинет</a>
+</div>
+<div class="overlay" id="overlay"></div>
+<main>
+    <div class="hero"><div class="container"><h1>О клинике «Дентал-Про»</h1><p>Современная стоматология с заботой о каждом пациенте</p></div></div>
+    <section><div class="container"><h2>Кто мы</h2><p class="about-text">Стоматологическая поликлиника «Дентал-Про» работает с 2012 года. Мы объединяем опытных врачей, передовые технологии и тёплое отношение к пациентам. Лечение по ОМС, ДМС, а также на коммерческой основе — с прозрачными ценами и гарантией качества.</p><p class="about-text">Наша миссия — сделать стоматологию доступной, комфортной и безболезненной для каждого.</p></div></section>
+    <section class="bg-light"><div class="container"><h2>Наши преимущества</h2><div class="grid-2">
+        <div class="card"><div class="icon">🏆</div><h3>12 лет доверия</h3><p>Более 10 000 благодарных пациентов.</p></div>
+        <div class="card"><div class="icon">🔬</div><h3>Своя лаборатория</h3><p>Зуботехническая лаборатория нового поколения.</p></div>
+        <div class="card"><div class="icon">💳</div><h3>Рассрочка 0%</h3><p>Лечение доступно каждому.</p></div>
+        <div class="card"><div class="icon">🕒</div><h3>Удобный график</h3><p>Пн–Пт: 9:00–21:00, Сб: 10:00–18:00.</p></div>
+        <div class="card"><div class="icon">🦷</div><h3>Современное оборудование</h3><p>3D томограф, микроскоп, лазер.</p></div>
+        <div class="card"><div class="icon">👨‍⚕️</div><h3>Опытные врачи</h3><p>Врачи высшей категории.</p></div>
+    </div></div></section>
+    <section><div class="container"><h2>Лицензии и сертификаты</h2><div class="license-list"><span class="license-badge">📜 Лицензия № ФС-99-01-123456</span><span class="license-badge">🏅 ISO 9001:2024</span><span class="license-badge">⭐ Лауреат премии "Лучшая клиника Воронежа"</span></div><p class="small-text" style="text-align: center; margin-top: 24px;">Все документы доступны для ознакомления в регистратуре.</p></div></section>
+    <div class="container record-section"><h3>Онлайн-запись на приём</h3><p>Выберите услугу и удобную дату</p>
+        <select id="appointmentService" class="service-select"><option value="">Загрузка услуг...</option></select>
+        <input type="date" id="appointmentDate" class="date-input">
+        <button class="btn" id="openDateModalBtn">Записаться онлайн</button>
+        <p class="small-text">*Только услуга и дата. Имя и телефон не требуются.</p>
+    </div>
+    <div id="successModal" class="modal"><div class="modal-content"><span class="close-modal" id="closeSuccessModal">&times;</span><h3>Заявка принята</h3><p id="modalMessage">Спасибо! Администратор перезвонит.</p><button class="btn" id="modalOkBtn" style="margin-top: 16px;">Хорошо</button></div></div>
+</main>
+<div class="dark-footer"><div class="container"><div class="footer-contact-grid"><div class="footer-contact-item"><h4>Контакты</h4><p>+7 (495) 123-45-67</p><p>info@dental-pro.ru</p><p>Воронеж, ул. Депутатская, 3</p></div><div class="footer-contact-item"><h4>Мессенджеры</h4><a href="#" class="social-link">ВКонтакте</a><a href="#" class="social-link">Telegram</a></div><div class="footer-contact-item"><h4>Режим работы</h4><p>Пн–Пт: 9:00 – 21:00</p><p>Сб: 10:00 – 18:00</p><p>Вс: выходной</p></div></div><div class="copyright-bottom">© Дентал-Про — стоматологическая поликлиника. Лицензия № ФС-99-01-123456</div></div></div>
+<script src="js/api.js"></script>
+<script>
+    const burger = document.getElementById('burgerBtn'), sideMenu = document.getElementById('sideMenu'), overlay = document.getElementById('overlay'), closeMenuBtn = document.getElementById('closeMenuBtn');
+    function openMenu() { sideMenu.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { sideMenu.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; }
+    burger.addEventListener('click', openMenu); closeMenuBtn.addEventListener('click', closeMenu); overlay.addEventListener('click', closeMenu);
+    
+    async function loadServices() {
+        try {
+            const services = await api.getServices();
+            const serviceSelect = document.getElementById('appointmentService');
+            if (services.length === 0) { serviceSelect.innerHTML = '<option value="">Услуги временно недоступны</option>'; return; }
+            serviceSelect.innerHTML = '<option value="">Выберите услугу</option>' + services.map(s => `<option value="${s.id}">${s.name} (от ${s.price.toLocaleString()} ₽)</option>`).join('');
+        } catch(err) { console.error(err); }
+    }
+    
+    // ВАЛИДАЦИЯ ДАТЫ — НЕЛЬЗЯ ВЫБРАТЬ ПРОШЕДШИЕ ДНИ
+    const dateInput = document.getElementById('appointmentDate');
+    function formatDate(date) { return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`; }
+    function setMinDate() {
+        if (!dateInput) return;
+        const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1); tomorrow.setHours(0,0,0,0);
+        dateInput.min = formatDate(tomorrow);
+        if (dateInput.value && new Date(dateInput.value) < tomorrow) dateInput.value = '';
+    }
+    if (dateInput) {
+        dateInput.addEventListener('keydown', (e) => e.preventDefault());
+        dateInput.addEventListener('change', function() {
+            if (new Date(this.value) < new Date(dateInput.min)) { alert('❌ Нельзя выбрать прошедшую дату.'); this.value = ''; }
+        });
+        setMinDate();
+    }
+    
+    const openModalBtn = document.getElementById('openDateModalBtn'), successModal = document.getElementById('successModal'), closeSuccess = document.getElementById('closeSuccessModal'), modalOk = document.getElementById('modalOkBtn');
+    function handleAppointment() {
+        const token = getToken();
+        if (!token) { alert('Для записи необходимо авторизоваться.'); window.location.href = 'profile.html'; return; }
+        const date = document.getElementById('appointmentDate').value, service = document.getElementById('appointmentService').value;
+        if (!date) { alert('Выберите дату'); return; }
+        if (!service) { alert('Выберите услугу'); return; }
+        const serviceName = document.getElementById('appointmentService').options[document.getElementById('appointmentService').selectedIndex]?.text || 'Услуга';
+        document.getElementById('modalMessage').innerHTML = `✅ Вы выбрали: ${serviceName}<br>Дата: ${date}<br><br>Мы свяжемся с вами.`;
+        successModal.style.display = 'flex';
+        document.getElementById('appointmentDate').value = '';
+        document.getElementById('appointmentService').value = '';
+    }
+    function closeSuccessModal() { successModal.style.display = 'none'; document.getElementById('modalMessage').innerHTML = 'Спасибо! Администратор перезвонит.'; }
+    openModalBtn?.addEventListener('click', handleAppointment);
+    closeSuccess?.addEventListener('click', closeSuccessModal);
+    modalOk?.addEventListener('click', closeSuccessModal);
+    window.addEventListener('click', (e) => { if (e.target === successModal) closeSuccessModal(); });
+    loadServices();
+</script>
+</body>
+</html>
